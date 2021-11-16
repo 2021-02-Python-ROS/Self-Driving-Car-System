@@ -3,11 +3,13 @@
 - Autonomous Driving Robot
 
 ## How To Launch
-``` Shell
+```markdown
 $ roscd deu_car
 $ source ./gazebo_env.sh
 $ roslaunch deu_car car_test.launch
+```
 
-``` Shell
+```markdown
 $ echo "alias car='roscd deu_car && source ./gazebo_env.sh && roslaunch deu_car car_test.launch''" >> .bashrc
 $ car
+```
