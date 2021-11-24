@@ -16,7 +16,7 @@ class BotReady(State):
         
     def execute(self, ud):
         rospy.loginfo("Ready")
-        rospy.sleep(rospy.Duration(3))
+        rospy.sleep(rospy.Duration(4))
         return 'success'
         
 class ScanBlockBar(State):
@@ -24,17 +24,14 @@ class ScanBlockBar(State):
     # Drive Start or Stop
     def __init__(self):
         State.__init__(self, outcomes=['success'])
-        self.rate = rospy.Rate(10)
-        self.botDrive = BotDrive()
+        self.rate = rospy.Rate(20)
+        # self.botDrive = BotDrive()
 
     def execute(self, ud):
         self.scan_blocking_bar = ScanBar()
         rospy.sleep(rospy.Duration(8))
-    #    while(rospy.Duration(1)):
-    #        self.botDrive.set_linear(1)
-    #        self.botDrive.bot_drive()
-        rospy.sleep(rospy.Duration(1))
-        return 'success'
+        if self.scan_blocking_bar.isBlockbarFinish == True:
+            return 'success'
 
 
 
@@ -64,7 +61,7 @@ class BotLaneTrack(State):
                 self.botDrive.set_linear(0.4)
                 self.botDrive.set_angular(err)
             elif abs(err) < 0.14:
-                self.botDrive.set_linear(1.0)
+                self.botDrive.set_linear(1)
                 self.botDrive.set_angular(err)
             self.botDrive.bot_drive()
 
