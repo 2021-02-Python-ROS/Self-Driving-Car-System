@@ -47,7 +47,7 @@ class ScanStopLine(ScanDefault):
             if 10000.0 < area:
                 self.scan_stop_line.publish(True)
                 self.stop_line_cx_pub.publish(self.x + self.w / 2)  # adjust stop line
-                print "stop line scanned"
+                #print "stop line scanned"
 
             self.scan_stop_line.publish(False)
             image = cv2.circle(image, (self.x + self.w / 2, y + h / 2), 20, (0, 255, 0), -1)

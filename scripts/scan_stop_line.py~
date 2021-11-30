@@ -23,8 +23,6 @@ class ScanStopLine(ScanDefault):
         upper_white = numpy.array([0, 0, 255])
         #lower_white = numpy.array([0, 0, 90])
         #upper_white = numpy.array([5, 5, 110])
-        #lower_white = numpy.array([200, 200, 200])
-        #upper_white = numpy.array([255, 255, 255])
         mask = cv2.inRange(hsv, lower_white, upper_white)
 
         h, w = mask.shape

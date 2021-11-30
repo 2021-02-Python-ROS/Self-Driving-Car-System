@@ -12,8 +12,8 @@ class BotStateMachine(object):
 
     def drive_bot(self):
         with self.autonomous_drive:
-            StateMachine.add('BOT_READY', bot_drive_state.BotReady(), transitions={'success':'SCAN_BAR'})
-            StateMachine.add('SCAN_BAR', bot_drive_state.ScannedBar(), transitions={'success':'LANE_TRACK'})
+            StateMachine.add('BOT_READY', bot_drive_state.BotReady(), transitions={'success':'LANE_TRACK'})
+            #StateMachine.add('SCAN_BAR', bot_drive_state.ScannedBar(), transitions={'success':'LANE_TRACK'})
             StateMachine.add('LANE_TRACK', bot_drive_state.BotLaneTrack(), transitions={'success':'success', 'scan_stop_line':'SCAN_STOP_LINE'})
             StateMachine.add('SCAN_STOP_LINE', bot_drive_state.ScannedStopLine(), transitions={'success':'LANE_TRACK'})
             #StateMachine.add('PROJECT_END', bot_drive_state.ProjectEnd().BotLaneTrack(), transitions={'success':'success'})

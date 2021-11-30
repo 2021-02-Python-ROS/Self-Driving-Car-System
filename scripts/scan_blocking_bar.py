@@ -17,7 +17,9 @@ class ScanBar(ScanDefault):
         self.scan_blockingbar = rospy.Publisher('detect/is_block', Bool, queue_size=1)
         self.len_contour = 0
         self.botDrive = BotDrive()
-        self.result = False
+        self.count = 0
+        rospy.Rate(20)
+        self.isBlockbarFinish = False
 
     def image_callback(self, msg):
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
@@ -35,25 +37,32 @@ class ScanBar(ScanDefault):
 
         if contours:
             self.image_pub.publish(block_bar_mask)
-            if self.len_contour >= 3:  # block_bar is shut down
+            if self.len_contour <= 3:  # block_bar is shut downed
+                self.scan_blockingbar.publish(False)  # to check
+                while(self.count <= 30):
+                    self.botDrive.set_linear(1)
+                    self.botDrive.bot_drive()
+                    # rospy.loginfo('gogo') # test code
+                    self.count += 1
+                    # rospy.loginfo("%d", self.count)
+                    break
+                if(self.count > 30):
+                    self.isBlockbarFinish = True
+
+
+            else:  # is open
                 self.scan_blockingbar.publish(True)  # to check
                 self.botDrive.set_linear(0)
-                self.botDrive.set_angular(0)
-                # rospy.loginfo('Stop') # for the test
+                self.botDrive.bot_drive()
+                self.count = 0
 
-            else:  # is open , after Count 3 seconds
-                current_time = int(rospy.Time.now().to_sec())
-                target_time = current_time + 4
-                self.scan_blockingbar.publish(False)  # to check
-                while(rospy.Duration(0.5)):
-                    self.botDrive.set_linear(1)
-                    self.botDrive.set_angular(0)
-                    self.botDrive.bot_drive()
-                    while target_time < int(rospy.Time.now().to_sec()):
-                        self.result = True  # go to the bot_drive_state.py LANE_TRACK
+                # rospy.loginfo('Stop') # test code
+        else:
+            self.botDrive.set_linear(1)
+            self.botDrive.bot_drive()
 
 
-#  Stand-alone test code
+#   Stand-alone test code
 if __name__ == "__main__":
     rospy.init_node('test_node')
     scanner = ScanBar()
@@ -68,4 +77,3 @@ if __name__ == "__main__":
             scanner.botDrive.set_linear(0)
             scanner.botDrive.bot_drive()
         scanner.rate.sleep()
-

@@ -18,18 +18,20 @@ class BotLaneTracker:
         
         self.cx = 0
         self.err = 0
+        self.t = image_topic_name
 
 
     def image_callback(self, msg):
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')  # img -> bgr8 cv2
         hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)  # bgr -> hsv
 
-        #h, s, v = cv2.split(hsv_image)
+        #h, s, v = cv2.split(hsv_image)  # image HSV split
         _, _, v = cv2.split(hsv_image)
-        v = cv2.inRange(v, 220, 255)  # 210 220, 220 255
+        v = cv2.inRange(v, 220, 255)  # V Image, Low Value, High Value
+        # 210, 220 or 220, 255
         
-        height, width, _ = hsv_image.shape
-        hsv_image[height/2:0, 0:width] = 0
+        #height, width, _ = hsv_image.shape
+        #hsv_image[height/2:0, 0:width] = 0
 
         M = cv2.moments(v)  # weight mid
         
@@ -37,6 +39,7 @@ class BotLaneTracker:
             self.cx = int(M['m10'] / M['m00'])
             cy = int(M['m01'] / M['m00'])
             cv2.circle(image, (self.cx, cy), 20, (0, 0, 255), -1)
+            # center pos(cx, cy), radius(20), color(B, G, R), thickness(-1: fill)
             self.cx = self.cx - 320
 
         image = self.bridge.cv2_to_imgmsg(image)
@@ -58,8 +61,8 @@ if __name__ == '__main__':
         if abs(err) > 0.14:
             botDrive.set_linear(0.4)
             botDrive.set_angular(err)
-        elif abs(err) <= 0.14:
-            botDrive.set_linear(1.0)
+        elif abs(err) < 0.14:
+            botDrive.set_linear(1)
             botDrive.set_angular(err)
         botDrive.bot_drive()
         rate.sleep()
