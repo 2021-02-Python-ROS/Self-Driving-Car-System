@@ -1,0 +1,15 @@
+(cl:defpackage deu_ros-srv
+  (:use )
+  (:export
+   "TWOINTS"
+   "<TWOINTS-REQUEST>"
+   "TWOINTS-REQUEST"
+   "<TWOINTS-RESPONSE>"
+   "TWOINTS-RESPONSE"
+   "WORDCOUNT"
+   "<WORDCOUNT-REQUEST>"
+   "WORDCOUNT-REQUEST"
+   "<WORDCOUNT-RESPONSE>"
+   "WORDCOUNT-RESPONSE"
+  ))
+
