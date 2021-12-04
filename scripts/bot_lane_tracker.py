@@ -5,7 +5,6 @@ import rospy
 import cv2
 import cv_bridge
 from sensor_msgs.msg import Image
-from scan_with_camera import ScanWithCamera
 from bot_drive_controller import BotDrive
 
 

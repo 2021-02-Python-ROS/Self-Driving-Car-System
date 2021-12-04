@@ -9,14 +9,15 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Bool
 
 
-class ImageConverter:
+class ScanStopSign:
     def __init__(self):
         self.bridge = cv_bridge.CvBridge()
         self.image_sub = rospy.Subscriber('camera/rgb/image_raw', Image, self.image_callback)
         self.block_pub = rospy.Publisher('detect/stop_sign', Bool, queue_size=1)
+
         self.drive_controller = BotDrive()
         self.contours = []
-        self.ko = False
+        self.stop = False
 
     def image_callback(self, msg):
 
@@ -32,15 +33,18 @@ class ImageConverter:
         block_bar_mask[0:h, 0: w- w/9] = 0
         block_bar_mask[h/2:h, 0:w] = 0
         block_bar_mask[0:h/10, 0:w] = 0
+
         block_bar_mask, self.contours, hierarchy = cv2.findContours(block_bar_mask, cv2.RETR_TREE,
                                                                     cv2.CHAIN_APPROX_SIMPLE)
-        rospy.loginfo(len(self.contours))
-        #print(len(self.contours))
+
+        # rospy.loginfo(len(self.contours))  debug code
         if len(self.contours) >= 7:
-            self.ko = True
+            self.stop = True
+        else:
+            self.stop = False
 
 
 if __name__ == '__main__':
     rospy.init_node('image_converter')
-    ic = ImageConverter()
+    ic = ScanStopSign()
     rospy.spin()

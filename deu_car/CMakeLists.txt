@@ -2,12 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(deu_car)
 find_package(catkin REQUIRED COMPONENTS
   rospy
-  std_msgs
-  message_generation
 )
-
-find_package(OpenCV REQUIRED)
-
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
@@ -54,10 +49,10 @@ find_package(OpenCV REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
+# generate_messages(
 #   DEPENDENCIES
-#  std_msgs  # Or other packages containing msgs
-)
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ###################################
 ## catkin specific configuration ##

@@ -22,3 +22,6 @@
   <!-- Bumper/cliff to pointcloud (not working, as it needs sensors/core messages) -->
   <include file="$(find turtlebot_bringup)/launch/includes/kobuki/bumper2pc.launch.xml"/>
 </launch>
+
+  <!-- upper course ***  -x -6.17 -y 10.78 -z 0 -Y -1.57   *** -->
+  <!-- downer course ***  -x -7.17 -y 10.78 -z 0.25 -Y -1.59   *** -->

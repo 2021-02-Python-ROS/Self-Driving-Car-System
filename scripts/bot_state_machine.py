@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import cv2
 import cv_bridge
 import rospy
 from sensor_msgs.msg import Image
@@ -16,8 +15,6 @@ class BotStateMachine(object):
 
     def image_callback(self, msg):
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        #cv2.imshow("Driving screen", image)
-        #cv2.waitKey(3)
 
     def drive_bot(self):
         with self.autonomous_drive:
@@ -32,7 +29,6 @@ class BotStateMachine(object):
             StateMachine.add('GO_STRAIGHT2', bot_drive_state.GoStraight2(), transitions={'success': 'LANE_TRACK'})
             StateMachine.add('LANE_TRACK2', bot_drive_state.BotLaneTrack2(), transitions={'success':'LANE_TRACK'})
             StateMachine.add('END_LINE', bot_drive_state.EndLine(), transitions={'success': 'success'})
-            # StateMachine.add('') ....
 
         sis = smach_ros.IntrospectionServer('test', self.autonomous_drive, '/SM_ROOT')
         sis.start()
